@@ -2,6 +2,8 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
+  <!-- Project coordinates -->
   <groupId>com.kando</groupId>
   <artifactId>kando-cli</artifactId>
   <packaging>jar</packaging>
@@ -9,31 +11,76 @@
   <name>kando-cli</name>
   <url>http://maven.apache.org</url>
 
+  <!-- Properties -->
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+
+    <picocli.version>4.7.7</picocli.version>
+    <gson.version>2.10.1</gson.version>
+  </properties>
+
+  <!-- Dependencies -->
   <dependencies>
+    <!-- JUnit -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+    <!-- Picocli -->
     <dependency>
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>
       <version>4.7.7</version>
     </dependency>
+    <!-- Gson -->
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.13.1</version>
+    </dependency>
   </dependencies>
 
+  <!-- Build configuration -->
   <build>
     <plugins>
+      <!-- Exec Maven Plugin -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
-        <version>3.5.1</version>
+        <version>3.1.0</version>
         <configuration>
           <mainClass>com.kando.App</mainClass>
         </configuration>
       </plugin>
+
+      <!-- Maven Shade Plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.6.0</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <transformers>
+                <transformer
+                  implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>com.kando.App</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
+
+
   </build>
 
 </project>

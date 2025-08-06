@@ -2,15 +2,20 @@ package com.kando;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
+
 import com.kando.commands.NewProjectCommand;
 import com.kando.commands.ListProjectsCommand;
 import com.kando.commands.SwitchProjectCommand;
+import com.kando.commands.ListTasksCommand;
 
-@Command(name = "kando", mixinStandardHelpOptions = true, version = "kando 1.0", description = "Kando CLI - local kanban for projects", subcommands = {
+import com.kando.commands.AddTaskCommand;
+
+@Command(name = "kando", mixinStandardHelpOptions = true, version = "kando 1.0", description = "Kando CLI, local kanban for projects", subcommands = {
         NewProjectCommand.class,
         ListProjectsCommand.class,
         SwitchProjectCommand.class,
-
+        AddTaskCommand.class,
+        ListTasksCommand.class
         // we'll add more subcommands later (add, move, show, etc.)
 })
 public class App implements Runnable {

@@ -112,5 +112,35 @@ public class DataStore {
     return t;
   }
 
-  // Additional helpers will be added as we implement more commands.
+  public synchronized Task findTaskInActiveProjectById(int id) {
+    Project p = getActiveProject();
+    if (p == null)
+      return null;
+    for (Task t : p.tasks) {
+      if (t != null && t.id == id) {
+        return t;
+      }
+    }
+    return null;
+  }
+
+  public synchronized boolean removeTaskFromActiveProjectById(int id) {
+    Project p = getActiveProject();
+    if (p == null)
+      return false;
+    Task toRemove = null;
+    for (Task t : p.tasks) {
+      if (t != null && t.id == id) {
+        toRemove = t;
+        break;
+      }
+    }
+    if (toRemove != null) {
+      p.tasks.remove(toRemove);
+      save();
+      return true;
+    }
+    return false;
+  }
+
 }

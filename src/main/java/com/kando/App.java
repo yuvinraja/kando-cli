@@ -10,7 +10,7 @@ import com.kando.commands.*;
         ListProjectsCommand.class,
         SwitchProjectCommand.class,
         AddTaskCommand.class,
-        ListTasksCommand.class,
+        ShowBoardCommand.class,
         MoveTaskCommand.class,
         RenameTaskCommand.class,
         DeleteTaskCommand.class

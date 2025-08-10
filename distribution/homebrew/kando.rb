@@ -5,7 +5,7 @@ class Kando < Formula
   desc "Kando CLI - Local Kanban for Projects"
   homepage "https://github.com/yuvinraja/kando-cli"
   url "https://github.com/yuvinraja/kando-cli/releases/download/v1.0.2/kando-v1.0.2-dist.tar.gz"
-  sha256 "REPLACE_WITH_ACTUAL_SHA256_AFTER_RELEASE"
+  sha256 "7713107332df1210d0a4f873acadfc8b039dc31798ce73bd0b46285964395bcc"
   license "MIT"
   version "1.0.2"
 

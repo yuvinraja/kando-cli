@@ -2,7 +2,7 @@ $ErrorActionPreference = 'Stop'
 
 $packageName = 'kando-cli'
 $url = 'https://github.com/yuvinraja/kando-cli/releases/download/v1.0.2/kando-v1.0.2-dist.zip'
-$checksum = 'REPLACE_WITH_ACTUAL_CHECKSUM'
+$checksum = '0fca49834377a21c7eab78b040d59e0cfe79e2038ee7d1c23c9bbe0f4144419b'
 $checksumType = 'sha256'
 $toolsDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
 $installDir = Join-Path $toolsDir 'kando'

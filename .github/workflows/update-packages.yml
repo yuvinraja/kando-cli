@@ -1,0 +1,71 @@
+name: Update Package Managers
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to update (e.g., v1.0.2)'
+        required: true
+        type: string
+
+jobs:
+  update-package-managers:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set version
+      id: version
+      run: |
+        if [ "${{ github.event_name }}" = "release" ]; then
+          echo "VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+        else
+          echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Update package manager configurations
+      run: |
+        chmod +x scripts/update-all-packages.sh
+        ./scripts/update-all-packages.sh "${{ steps.version.outputs.VERSION }}"
+        
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v6
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: "chore: update package managers for ${{ steps.version.outputs.VERSION }}"
+        title: "Update package managers for ${{ steps.version.outputs.VERSION }}"
+        body: |
+          Automated update of package manager configurations for release ${{ steps.version.outputs.VERSION }}.
+          
+          ## Changes
+          - Updated Homebrew formula with new version and SHA256
+          - Updated Chocolatey package specification
+          - Updated Winget manifest
+          - Updated Snap configuration
+          
+          ## Manual Steps Required
+          
+          After merging this PR:
+          
+          ### 🍺 Homebrew
+          1. Copy `distribution/homebrew/kando.rb` to your `homebrew-kando` repository
+          2. Commit and push to make it available via `brew install yuvinraja/kando/kando`
+          
+          ### 🍫 Chocolatey
+          1. Run `cd distribution/chocolatey && choco pack`
+          2. Submit: `choco push kando-cli.${{ steps.version.outputs.VERSION }}.nupkg`
+          
+          ### 🪟 Winget
+          1. Submit manifest to microsoft/winget-pkgs repository
+          
+          ### 📦 Snap
+          1. Build and publish: `snapcraft && snapcraft upload`
+        branch: update-packages-${{ steps.version.outputs.VERSION }}
+        delete-branch: true

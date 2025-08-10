@@ -1,13 +1,20 @@
 name: kando-cli
-version: '1.0.0'
+version: '1.0.2'
 summary: Kando CLI - Local Kanban for Projects
 description: |
   Kando CLI is a command-line tool for managing local Kanban boards for your projects. 
   Organize your tasks across different projects with a simple and intuitive interface.
+  
+  Features:
+  * Create and manage multiple projects
+  * Add, move, and organize tasks  
+  * Switch between projects
+  * Simple command-line interface
+  * Local data storage
 
 grade: stable
 confinement: strict
-base: core20
+base: core22
 
 architectures:
   - build-on: amd64

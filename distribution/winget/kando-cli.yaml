@@ -1,0 +1,65 @@
+# Winget Package Manifest
+# For submission to Microsoft's winget-pkgs repository
+
+PackageIdentifier: yuvinraja.kando-cli
+PackageVersion: 1.0.2
+PackageName: Kando CLI
+Publisher: Yuvin Raja
+License: MIT
+LicenseUrl: https://github.com/yuvinraja/kando-cli/blob/main/LICENSE
+ShortDescription: Local Kanban for Projects - Command Line Interface
+Description: |-
+  Kando CLI is a command-line tool for managing local Kanban boards for your projects.
+  Organize your tasks across different projects with a simple and intuitive interface.
+  
+  Features:
+  - Create and manage multiple projects
+  - Add, move, and organize tasks
+  - Switch between projects
+  - Simple command-line interface
+  - Local data storage
+Moniker: kando
+Tags:
+- cli
+- kanban
+- project-management
+- productivity
+- java
+PackageUrl: https://github.com/yuvinraja/kando-cli
+Author: Yuvin Raja
+PackageLocale: en-US
+ManifestType: defaultLocale
+ManifestVersion: 1.4.0
+
+---
+PackageIdentifier: yuvinraja.kando-cli
+PackageVersion: 1.0.2
+InstallerLocale: en-US
+Platform:
+- Windows.Desktop
+MinimumOSVersion: 10.0.0.0
+InstallerType: zip
+Scope: user
+InstallModes:
+- interactive
+- silent
+UpgradeBehavior: install
+Dependencies:
+  PackageDependencies:
+  - PackageIdentifier: Oracle.JDK.17
+Installers:
+- Architecture: x64
+  InstallerUrl: https://github.com/yuvinraja/kando-cli/releases/download/v1.0.2/kando-v1.0.2-dist.zip
+  InstallerSha256: REPLACE_WITH_ACTUAL_SHA256
+  NestedInstallerType: portable
+  NestedInstallerFiles:
+  - RelativeFilePath: bin\kando.bat
+    PortableCommandAlias: kando
+ManifestType: installer
+ManifestVersion: 1.4.0
+
+---
+PackageIdentifier: yuvinraja.kando-cli
+PackageVersion: 1.0.2
+ManifestType: version
+ManifestVersion: 1.4.0

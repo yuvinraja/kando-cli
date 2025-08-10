@@ -1,6 +1,91 @@
 # Kando CLI Distribution Guide
 
-This document outlines the distribution methods for Kando CLI across different platforms.
+This document outlines the distribution methods for Kando CLI across different platf## Automated Package Manager Updates
+
+### Quick Update All Packages
+```bash
+# Update all package managers for a new release
+./scripts/update-all-packages.sh v1.0.2
+```
+
+### Individual Package Managers
+```bash
+# Update Homebrew only
+./scripts/update-homebrew.sh v1.0.2
+
+# Update Chocolatey only  
+./scripts/update-chocolatey.sh v1.0.2
+```
+
+### GitHub Actions Integration
+The repository includes automated workflows that:
+1. **On Release**: Automatically updates all package manager configurations
+2. **Creates PR**: With updated configurations for review
+3. **Manual Trigger**: Can be triggered manually for any version
+
+## Manual Publication Steps
+
+After running the update scripts, follow these steps to publish:
+
+### 🍺 Homebrew
+1. **Create Tap Repository**: `yuvinraja/homebrew-kando` on GitHub
+2. **Copy Formula**: 
+   ```bash
+   cp distribution/homebrew/kando.rb /path/to/homebrew-kando/Formula/kando.rb
+   git add Formula/kando.rb
+   git commit -m "Update kando to 1.0.2"
+   git push origin main
+   ```
+3. **Test Installation**:
+   ```bash
+   brew tap yuvinraja/kando
+   brew install kando
+   kando --version
+   ```
+
+### 🍫 Chocolatey
+1. **Build Package**:
+   ```bash
+   cd distribution/chocolatey
+   choco pack
+   ```
+2. **Submit to Community Repository**:
+   ```bash
+   choco push kando-cli.1.0.2.nupkg -s https://push.chocolatey.org/
+   ```
+3. **Wait for Moderation**: Community packages require approval
+
+### 🪟 Winget
+1. **Fork Repository**: https://github.com/microsoft/winget-pkgs
+2. **Add Manifests**: Copy to `manifests/y/yuvinraja/kando-cli/1.0.2/`
+3. **Create Pull Request**: Submit for Microsoft review
+4. **Validation**: Microsoft validates the package automatically
+
+### 📦 Snap
+1. **Install Snapcraft**: `sudo snap install snapcraft --classic`
+2. **Login**: `snapcraft login`
+3. **Build**: `snapcraft` (in project root)
+4. **Upload**: `snapcraft upload kando-cli_1.0.2_amd64.snap`
+5. **Release**: `snapcraft release kando-cli <revision> stable`
+
+### 🐧 Additional Linux Packages
+
+#### AppImage
+```bash
+# Build AppImage (requires additional setup)
+wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+chmod +x appimagetool-x86_64.AppImage
+./appimagetool-x86_64.AppImage kando.AppDir
+```
+
+#### Flatpak
+```bash
+# Build Flatpak (requires manifest)
+flatpak-builder build com.kando.CLI.yml
+flatpak build-export repo build
+```
+
+### Package Manager Distributionrms.
 
 ## Quick Install
 
@@ -118,15 +203,16 @@ sdk install kando
 
 ## Package Manager Status
 
-| Platform | Status | Command |
-|----------|--------|---------|
-| Homebrew | ✅ Ready | `brew install yuvinraja/kando/kando` |
-| Chocolatey | 🚧 In Progress | `choco install kando-cli` |
-| Snap | 🚧 In Progress | `snap install kando-cli` |
-| Flatpak | 📋 Planned | `flatpak install kando-cli` |
-| AUR | 📋 Planned | `yay -S kando-cli` |
-| npm | 📋 Planned | `npm install -g kando-cli` |
-| SDKMAN! | 📋 Planned | `sdk install kando` |
+| Platform | Status | Command | Auto-Update |
+|----------|--------|---------|-------------|
+| Homebrew | 🚀 Ready | `brew install yuvinraja/kando/kando` | ✅ Automated |
+| Chocolatey | � Ready | `choco install kando-cli` | ✅ Automated |
+| Winget | � Ready | `winget install yuvinraja.kando-cli` | ✅ Automated |
+| Snap | 🚀 Ready | `snap install kando-cli` | ✅ Automated |
+| Flatpak | 📋 Planned | `flatpak install kando-cli` | ❌ Manual |
+| AUR | 📋 Planned | `yay -S kando-cli` | ❌ Manual |
+| npm | 📋 Planned | `npm install -g kando-cli` | ❌ Manual |
+| SDKMAN! | 📋 Planned | `sdk install kando` | ❌ Manual |
 
 ## Building Distribution Packages
 

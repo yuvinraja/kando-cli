@@ -1,7 +1,7 @@
 $ErrorActionPreference = 'Stop'
 
 $packageName = 'kando-cli'
-$url = 'https://github.com/yuvinraja/kando-cli/releases/download/v1.0.0/kando-1.0.0-dist.zip'
+$url = 'https://github.com/yuvinraja/kando-cli/releases/download/v1.0.2/kando-v1.0.2-dist.zip'
 $checksum = 'REPLACE_WITH_ACTUAL_CHECKSUM'
 $checksumType = 'sha256'
 $toolsDir = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"

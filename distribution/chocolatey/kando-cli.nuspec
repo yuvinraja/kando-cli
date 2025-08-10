@@ -2,13 +2,13 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>kando-cli</id>
-    <version>1.0.0</version>
+    <version>1.0.2</version>
     <packageSourceUrl>https://github.com/yuvinraja/kando-cli</packageSourceUrl>
     <owners>yuvinraja</owners>
     <title>Kando CLI</title>
     <authors>Yuvin Raja</authors>
     <projectUrl>https://github.com/yuvinraja/kando-cli</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/yuvinraja/kando-cli/main/icon.png</iconUrl>
+    <iconUrl>https://raw.githubusercontent.com/yuvinraja/kando-cli/main/assets/icon.png</iconUrl>
     <copyright>2025 Yuvin Raja</copyright>
     <licenseUrl>https://github.com/yuvinraja/kando-cli/blob/main/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

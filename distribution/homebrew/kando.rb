@@ -4,9 +4,10 @@
 class Kando < Formula
   desc "Kando CLI - Local Kanban for Projects"
   homepage "https://github.com/yuvinraja/kando-cli"
-  url "https://github.com/yuvinraja/kando-cli/releases/download/v1.0.0/kando-1.0.0-dist.tar.gz"
-  sha256 "REPLACE_WITH_ACTUAL_SHA256"
+  url "https://github.com/yuvinraja/kando-cli/releases/download/v1.0.2/kando-v1.0.2-dist.tar.gz"
+  sha256 "REPLACE_WITH_ACTUAL_SHA256_AFTER_RELEASE"
   license "MIT"
+  version "1.0.2"
 
   depends_on "openjdk@17"
 
@@ -21,7 +22,7 @@ class Kando < Formula
   end
 
   test do
-    assert_match "kando", shell_output("#{bin}/kando --version")
+    assert_match "kando 1.0", shell_output("#{bin}/kando --version")
   end
 end
 

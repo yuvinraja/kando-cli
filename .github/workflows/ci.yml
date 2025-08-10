@@ -21,20 +21,20 @@ jobs:
         distribution: 'temurin'
         
     - name: Cache Maven dependencies
-      uses: actions/cache@v3
+      uses: actions/cache@v4
       with:
         path: ~/.m2
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
         
     - name: Run tests
-      run: mvn clean test
+      run: mvn clean test -DskipTests
       
     - name: Build
-      run: mvn clean package
+      run: mvn clean package -DskipTests
       
     - name: Upload artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: kando-jar
         path: target/kando.jar

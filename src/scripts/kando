@@ -1,0 +1,30 @@
+#!/bin/bash
+# Kando CLI - Unix/Linux/macOS launcher script
+
+# Find the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+JAR_PATH="$SCRIPT_DIR/../lib/kando.jar"
+
+# Check if Java is available
+if ! command -v java &> /dev/null; then
+    echo "Error: Java is not installed or not in PATH"
+    echo "Please install Java 17 or later"
+    exit 1
+fi
+
+# Check Java version
+JAVA_VERSION=$(java -version 2>&1 | head -n 1 | cut -d'"' -f2 | cut -d'.' -f1)
+if [ "$JAVA_VERSION" -lt 17 ]; then
+    echo "Error: Java 17 or later is required"
+    echo "Current Java version: $JAVA_VERSION"
+    exit 1
+fi
+
+# Check if JAR exists
+if [ ! -f "$JAR_PATH" ]; then
+    echo "Error: kando.jar not found at $JAR_PATH"
+    exit 1
+fi
+
+# Execute the application
+exec java -jar "$JAR_PATH" "$@"

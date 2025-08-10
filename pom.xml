@@ -7,45 +7,99 @@
   <groupId>com.kando</groupId>
   <artifactId>kando-cli</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>kando-cli</name>
-  <url>http://maven.apache.org</url>
+  <description>Kando CLI - Local Kanban for Projects</description>
+  <url>https://github.com/yuvinraja/kando-cli</url>
+
+  <!-- License -->
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
+
+  <!-- Developer information -->
+  <developers>
+    <developer>
+      <id>yuvinraja</id>
+      <name>Yuvin Raja</name>
+      <url>https://github.com/yuvinraja</url>
+    </developer>
+  </developers>
+
+  <!-- SCM information -->
+  <scm>
+    <connection>scm:git:git://github.com/yuvinraja/kando-cli.git</connection>
+    <developerConnection>scm:git:ssh://github.com:yuvinraja/kando-cli.git</developerConnection>
+    <url>https://github.com/yuvinraja/kando-cli/tree/main</url>
+  </scm>
 
   <!-- Properties -->
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
 
     <picocli.version>4.7.7</picocli.version>
-    <gson.version>2.10.1</gson.version>
+    <gson.version>2.13.1</gson.version>
+    <junit.version>5.9.2</junit.version>
+
+    <!-- Plugin versions -->
+    <maven.shade.plugin.version>3.4.1</maven.shade.plugin.version>
+    <maven.assembly.plugin.version>3.4.2</maven.assembly.plugin.version>
+    <maven.surefire.plugin.version>3.0.0-M9</maven.surefire.plugin.version>
   </properties>
 
   <!-- Dependencies -->
   <dependencies>
-    <!-- JUnit -->
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
     <!-- Picocli -->
     <dependency>
       <groupId>info.picocli</groupId>
       <artifactId>picocli</artifactId>
-      <version>4.7.7</version>
+      <version>${picocli.version}</version>
     </dependency>
+
     <!-- Gson -->
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.13.1</version>
+      <version>${gson.version}</version>
+    </dependency>
+
+    <!-- JUnit 5 for testing -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
   <!-- Build configuration -->
   <build>
+    <finalName>kando</finalName>
     <plugins>
+      <!-- Maven Compiler Plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+        <configuration>
+          <release>17</release>
+          <encoding>UTF-8</encoding>
+        </configuration>
+      </plugin>
+
+      <!-- Maven Surefire Plugin for testing -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven.surefire.plugin.version}</version>
+      </plugin>
+
       <!-- Exec Maven Plugin -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -56,11 +110,11 @@
         </configuration>
       </plugin>
 
-      <!-- Maven Shade Plugin -->
+      <!-- Maven Shade Plugin - Creates uber JAR -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.6.0</version>
+        <version>${maven.shade.plugin.version}</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -68,31 +122,49 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+              <createDependencyReducedPom>false</createDependencyReducedPom>
               <transformers>
                 <transformer
                   implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>com.kando.App</mainClass>
+                  <manifestEntries>
+                    <Implementation-Title>${project.name}</Implementation-Title>
+                    <Implementation-Version>${project.version}</Implementation-Version>
+                    <Implementation-Vendor>Yuvin Raja</Implementation-Vendor>
+                    <Built-By>${user.name}</Built-By>
+                    <Build-Time>${maven.build.timestamp}</Build-Time>
+                  </manifestEntries>
                 </transformer>
               </transformers>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
             </configuration>
           </execution>
         </executions>
       </plugin>
 
-      <!-- Maven Assembly Plugin -->
+      <!-- Maven Assembly Plugin - Creates distribution archives -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.4.2</version>
+        <version>${maven.assembly.plugin.version}</version>
         <configuration>
+          <descriptors>
+            <descriptor>src/assembly/distribution.xml</descriptor>
+          </descriptors>
           <archive>
             <manifest>
               <mainClass>com.kando.App</mainClass>
             </manifest>
           </archive>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
         </configuration>
         <executions>
           <execution>
@@ -105,8 +177,6 @@
         </executions>
       </plugin>
     </plugins>
-
-
   </build>
 
 </project>

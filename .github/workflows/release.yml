@@ -1,0 +1,112 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
+        
+    - name: Build with Maven
+      run: mvn clean package
+      
+    - name: Create release assets
+      run: |
+        mkdir -p release-assets
+        cp target/kando.jar release-assets/
+        cp target/kando-*-dist.tar.gz release-assets/ || true
+        cp target/kando-*-dist.zip release-assets/ || true
+        
+    - name: Get version from tag
+      id: get_version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+      
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Kando CLI v${{ steps.get_version.outputs.VERSION }}
+        draft: false
+        prerelease: false
+        body: |
+          ## Kando CLI v${{ steps.get_version.outputs.VERSION }}
+          
+          ### Installation
+          
+          #### Quick Install (Recommended)
+          ```bash
+          # Download and extract
+          curl -L https://github.com/yuvinraja/kando-cli/releases/download/v${{ steps.get_version.outputs.VERSION }}/kando-${{ steps.get_version.outputs.VERSION }}-dist.tar.gz | tar -xz
+          
+          # Move to a directory in your PATH
+          sudo mv kando-${{ steps.get_version.outputs.VERSION }}/bin/kando /usr/local/bin/
+          ```
+          
+          #### Java JAR
+          Requires Java 17+:
+          ```bash
+          java -jar kando.jar --help
+          ```
+          
+          ### What's New
+          - Bug fixes and improvements
+          
+          ### Assets
+          - `kando.jar` - Executable JAR (requires Java 17+)
+          - `kando-${{ steps.get_version.outputs.VERSION }}-dist.tar.gz` - Complete distribution (Unix/Linux/macOS)
+          - `kando-${{ steps.get_version.outputs.VERSION }}-dist.zip` - Complete distribution (Windows)
+          
+    - name: Upload JAR
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./release-assets/kando.jar
+        asset_name: kando.jar
+        asset_content_type: application/java-archive
+        
+    - name: Upload tar.gz distribution
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./release-assets/kando-${{ steps.get_version.outputs.VERSION }}-dist.tar.gz
+        asset_name: kando-${{ steps.get_version.outputs.VERSION }}-dist.tar.gz
+        asset_content_type: application/gzip
+      continue-on-error: true
+        
+    - name: Upload zip distribution
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./release-assets/kando-${{ steps.get_version.outputs.VERSION }}-dist.zip
+        asset_name: kando-${{ steps.get_version.outputs.VERSION }}-dist.zip
+        asset_content_type: application/zip
+      continue-on-error: true

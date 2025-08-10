@@ -1,38 +1,30 @@
 package com.kando;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 /**
- * Unit test for simple App.
+ * Unit tests for Kando CLI App.
  */
-public class AppTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
+public class AppTest {
+
+    @Test
+    @DisplayName("Application should initialize without errors")
+    public void testAppInitialization() {
+        // Basic test to ensure the app can be instantiated
+        App app = new App();
+        assertNotNull(app, "App instance should not be null");
     }
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
-
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
+    @Test
+    @DisplayName("Application should have main method")
+    public void testMainMethod() {
+        // Test that main method exists and can be called
+        assertDoesNotThrow(() -> {
+            App.main(new String[] { "--help" });
+        }, "Main method should not throw exception with help flag");
     }
 }

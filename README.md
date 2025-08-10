@@ -12,39 +12,71 @@ Kando CLI helps you organize your tasks in a simple, visual Kanban board format 
 
 ## Installation
 
-### Option 1: Download Pre-built JAR (Recommended)
+### Quick Install (Recommended)
 
-1. Download the latest `kando.jar` from the [releases page](https://github.com/yourusername/kando-cli/releases)
-2. Place it in a directory of your choice
-3. Create an alias or script to run it easily
-
-#### Windows (PowerShell)
-```powershell
-# Create an alias (temporary - for current session)
-Set-Alias kando "java -jar C:\path\to\kando.jar"
-
-# Or create a permanent batch file
-echo @echo off > kando.bat
-echo java -jar "C:\path\to\kando.jar" %* >> kando.bat
-# Move kando.bat to a directory in your PATH
-```
-
-#### macOS/Linux (Bash/Zsh)
+#### Homebrew (macOS/Linux)
 ```bash
-# Add to your ~/.bashrc or ~/.zshrc
-alias kando='java -jar /path/to/kando.jar'
-
-# Or create a script
-echo '#!/bin/bash' > /usr/local/bin/kando
-echo 'java -jar /path/to/kando.jar "$@"' >> /usr/local/bin/kando
-chmod +x /usr/local/bin/kando
+# Add tap and install
+brew tap yuvinraja/kando
+brew install kando
 ```
 
-### Option 2: Build from Source
+#### Direct Download
+```bash
+# Download and extract
+curl -L https://github.com/yuvinraja/kando-cli/releases/latest/download/kando-1.0.0-dist.tar.gz | tar -xz
+
+# Move to PATH
+sudo mv kando-1.0.0/bin/kando /usr/local/bin/
+```
+
+#### Java JAR (All Platforms)
+Requires Java 17+:
+```bash
+# Download JAR
+curl -L -O https://github.com/yuvinraja/kando-cli/releases/latest/download/kando.jar
+
+# Run directly
+java -jar kando.jar --help
+
+# Create alias (optional)
+echo 'alias kando="java -jar /path/to/kando.jar"' >> ~/.bashrc
+```
+
+### Platform-Specific
+
+#### Windows
+```powershell
+# Chocolatey (coming soon)
+choco install kando-cli
+
+# Or download ZIP and add to PATH
+# Download kando-1.0.0-dist.zip from releases
+```
+
+#### Linux
+```bash
+# Snap (coming soon)
+sudo snap install kando-cli
+
+# Or use the direct download method above
+```
+
+#### Docker
+```bash
+# Run directly
+docker run --rm yuvinraja/kando-cli:latest --help
+
+# With data persistence
+mkdir -p ~/kando-data
+docker run --rm -v ~/kando-data:/app/data yuvinraja/kando-cli:latest new myproject
+```
+
+### Build from Source
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/kando-cli.git
+   git clone https://github.com/yuvinraja/kando-cli.git
    cd kando-cli
    ```
 
@@ -55,10 +87,10 @@ chmod +x /usr/local/bin/kando
 
 3. **Run the application**
    ```bash
-   java -jar target/kando-cli-1.0-SNAPSHOT.jar
+   java -jar target/kando.jar
    ```
 
-### Option 3: Install with Maven (Development)
+### Development Setup
 
 1. Clone and build as above
 2. Install to local Maven repository:
@@ -70,6 +102,8 @@ chmod +x /usr/local/bin/kando
    ```bash
    mvn exec:java -Dexec.mainClass="com.kando.App"
    ```
+
+For more installation options, see [DISTRIBUTION.md](DISTRIBUTION.md).
 
 ## Quick Start
 

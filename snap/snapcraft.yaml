@@ -1,0 +1,51 @@
+name: kando-cli
+version: '1.0.0'
+summary: Kando CLI - Local Kanban for Projects
+description: |
+  Kando CLI is a command-line tool for managing local Kanban boards for your projects. 
+  Organize your tasks across different projects with a simple and intuitive interface.
+
+grade: stable
+confinement: strict
+base: core20
+
+architectures:
+  - build-on: amd64
+
+apps:
+  kando:
+    command: bin/kando
+    plugs:
+      - home
+      - network
+
+parts:
+  kando:
+    plugin: dump
+    source: .
+    organize:
+      kando.jar: lib/kando.jar
+      src/scripts/kando: bin/kando
+    stage:
+      - lib/kando.jar
+      - bin/kando
+    override-build: |
+      # Build the application
+      mvn clean package
+      # Copy files to the snap
+      mkdir -p $SNAPCRAFT_PART_INSTALL/lib
+      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+      cp target/kando.jar $SNAPCRAFT_PART_INSTALL/lib/
+      cp src/scripts/kando $SNAPCRAFT_PART_INSTALL/bin/
+      chmod +x $SNAPCRAFT_PART_INSTALL/bin/kando
+    build-packages:
+      - openjdk-17-jdk
+      - maven
+    stage-packages:
+      - openjdk-17-jre-headless
+
+# Build instructions:
+# 1. Install snapcraft: sudo snap install snapcraft --classic
+# 2. Build: snapcraft
+# 3. Install locally: sudo snap install kando-cli_1.0.0_amd64.snap --dangerous
+# 4. Publish: snapcraft upload kando-cli_1.0.0_amd64.snap --release=stable

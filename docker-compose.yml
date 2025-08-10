@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  kando:
+    build: .
+    image: kando-cli:latest
+    container_name: kando-cli
+    volumes:
+      - ./data:/app/data  # Mount local data directory
+    working_dir: /app
+    # Override entrypoint to keep container running
+    entrypoint: ["tail", "-f", "/dev/null"]
+    
+# Usage examples:
+# Build: docker-compose build
+# Run: docker-compose run --rm kando --help
+# Interactive: docker-compose run --rm kando new myproject

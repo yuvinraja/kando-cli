@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>kando-cli</id>
+    <version>1.0.0</version>
+    <packageSourceUrl>https://github.com/yuvinraja/kando-cli</packageSourceUrl>
+    <owners>yuvinraja</owners>
+    <title>Kando CLI</title>
+    <authors>Yuvin Raja</authors>
+    <projectUrl>https://github.com/yuvinraja/kando-cli</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/yuvinraja/kando-cli/main/icon.png</iconUrl>
+    <copyright>2025 Yuvin Raja</copyright>
+    <licenseUrl>https://github.com/yuvinraja/kando-cli/blob/main/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/yuvinraja/kando-cli</projectSourceUrl>
+    <docsUrl>https://github.com/yuvinraja/kando-cli/blob/main/README.md</docsUrl>
+    <bugTrackerUrl>https://github.com/yuvinraja/kando-cli/issues</bugTrackerUrl>
+    <tags>cli kanban project-management productivity java</tags>
+    <summary>Local Kanban for Projects - Command Line Interface</summary>
+    <description>
+      Kando CLI is a command-line tool for managing local Kanban boards for your projects.
+      Organize your tasks across different projects with a simple and intuitive interface.
+
+      Features:
+      - Create and manage multiple projects
+      - Add, move, and organize tasks
+      - Switch between projects
+      - Simple command-line interface
+      - Local data storage
+
+      Requirements: Java 17 or later
+    </description>
+    <releaseNotes>https://github.com/yuvinraja/kando-cli/releases</releaseNotes>
+    <dependencies>
+      <dependency id="openjdk" version="17.0.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

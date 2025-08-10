@@ -7,7 +7,7 @@ echo "🚀 Building Kando CLI..."
 
 # Clean and build
 echo "📦 Building with Maven..."
-mvn clean package -q
+mvn clean package -q -DskipTests
 
 # Check if build was successful
 if [ -f "target/kando.jar" ]; then

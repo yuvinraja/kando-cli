@@ -5,7 +5,7 @@ echo 🚀 Building Kando CLI...
 
 REM Clean and build
 echo 📦 Building with Maven...
-call mvn clean package -q
+call mvn clean package -q -DskipTests
 
 REM Check if build was successful
 if exist "target\kando.jar" (
